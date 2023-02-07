@@ -16,7 +16,7 @@ PATH=$(em-config LLVM_ROOT):$PATH
 
 CFLAGS="-s USE_PTHREADS"
 LDFLAGS="$CFLAGS -s INITIAL_MEMORY=33554432" # 33554432 bytes = 32 MB
-FLAGS=(
+FFMPEG_FLAGS=(
   --target-os=none
   --enable-cross-compile
   --arch=x86_32
@@ -36,7 +36,7 @@ FLAGS=(
   --dep-cc=emcc
 )
 
-emconfigure ./configure "${FLAGS[@]}"
+emconfigure ./configure "${FFMPEG_FLAGS[@]}"
 
 emmake make -j8
 
@@ -46,11 +46,18 @@ EMCC_FLAGS=(
   -I. -I./fftools
   -Llibavcodec -Llibavdevice -Llibavfilter -Llibavformat -Llibavutil -Llibpostproc -Llibswscale -Llibswresample
   -Qunused-arguments
-  -o wasm/dist/ffmpeg.js fftools/ffmpeg_filter.c fftools/ffmpeg_hw.c fftools/ffmpeg_mux.c fftools/ffmpeg_opt.c  fftools/cmdutils.c fftools/opt_common.c fftools/ffmpeg.c
+  -o wasm/dist/ffmpeg-core.js fftools/ffmpeg_filter.c fftools/ffmpeg_hw.c fftools/ffmpeg_mux.c fftools/ffmpeg_opt.c  fftools/cmdutils.c fftools/opt_common.c fftools/ffmpeg.c
   -lavdevice -lavfilter -lavformat -lavcodec -lswresample -lswscale -lavutil -lm
-  -s USE_SDL=2                    # use SDL2
-  -s USE_PTHREADS=1               # enable pthreads support
-  -s INITIAL_MEMORY=33554432      # 33554432 bytes = 32 MB
+  -O3
+  -s USE_SDL=2                                                            # use SDL2
+  -s USE_PTHREADS=1                                                       # enable pthreads support
+  -s PROXY_TO_PTHREAD=1                                                  # detach main() from browser/UI main thread
+  -s EXPORTED_FUNCTIONS="[_main]"                            # export main and proxy_main funcs
+  -s EXPORTED_RUNTIME_METHODS="[FS, cwrap, setValue, writeAsciiToMemory]" # export preamble funcs
+  -s INITIAL_MEMORY=33554432                                              # 33554432 bytes = 32 MB
+  -s INVOKE_RUN=0                                                         # not to run the main() in the beginning
+  -s INITIAL_MEMORY=33554432                                              # 33554432 bytes = 32 MB
+  -s ENVIRONMENT=web,worker
 )
 
 emcc "${EMCC_FLAGS[@]}"
