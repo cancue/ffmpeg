@@ -1,0 +1,1 @@
+Module['malloc'] = _malloc;
