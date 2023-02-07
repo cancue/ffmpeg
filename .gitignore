@@ -41,3 +41,9 @@
 /src
 /mapfile
 /tools/python/__pycache__/
+
+# misc
+.DS_Store
+
+# wasm dist
+/wasm
