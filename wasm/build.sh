@@ -84,12 +84,11 @@ EMCC_FLAGS=(
   -s ENVIRONMENT=web,worker
   -s EXIT_RUNTIME=1                 # exit runtime after execution
   -s MODULARIZE=1                   # use modularized version to be more flexible
-  -s EXPORT_NAME="NewCore"          # assign export name for browser
-  -s EXPORTED_FUNCTIONS="[_main]"   # export main
-  -s EXPORTED_RUNTIME_METHODS="[FS, callMain, cwrap, ccall, _malloc, setValue, writeAsciiToMemory, lengthBytesUTF8, stringToUTF8, UTF8ToString]"   # export preamble funcs
+  -s EXPORT_NAME="createFFmpegCore" # assign export name for browser
+  -s EXPORTED_FUNCTIONS="[_main, __emscripten_proxy_main]"   # export main
+  -s EXPORTED_RUNTIME_METHODS="[FS, cwrap, ccall, _malloc, setValue, writeAsciiToMemory, lengthBytesUTF8, stringToUTF8, UTF8ToString]"   # export preamble funcs
   --post-js wasm/src/post.js
   --pre-js wasm/src/pre.js
 )
 
 emcc "${EMCC_FLAGS[@]}"
-
