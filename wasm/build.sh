@@ -81,20 +81,21 @@ EMCC_FLAGS=(
   -Wno-deprecated-declarations -Wno-pointer-sign -Wno-implicit-int-float-conversion -Wno-switch -Wno-parentheses -Qunused-arguments
   -o wasm/dist/ffmpeg-core.js fftools/ffmpeg_filter.c fftools/ffmpeg_hw.c fftools/ffmpeg_mux.c fftools/ffmpeg_opt.c  fftools/cmdutils.c fftools/opt_common.c fftools/ffmpeg.c
   -lavdevice -lavfilter -lavformat -lavcodec -lswresample -lswscale -lavutil -lpostproc -lm -lx264 -lvpx -lfdk-aac -lz -lopus -lwebp
-  -s USE_SDL=2                      # use SDL2
+  -pthread
   -s USE_PTHREADS=1                 # enable pthreads support
   -s PROXY_TO_PTHREAD=1             # detach main() from browser/UI main thread
+  -s ALLOW_MEMORY_GROWTH=1
+  -s INITIAL_MEMORY=33554432        # 32MB
+  -s USE_SDL=2                      # use SDL2
   -s INVOKE_RUN=0                   # not to run the main() in the beginning
-  -s INITIAL_MEMORY=33554432        # 33554432 bytes = 32 MB
-  -s ENVIRONMENT=web,worker
   -s EXIT_RUNTIME=1                 # exit runtime after execution
+  -s ENVIRONMENT=web,worker
   -s MODULARIZE=1                   # use modularized version to be more flexible
-  -s EXPORT_NAME="createFFmpegCore" # assign export name for browser
+  -s EXPORT_NAME="createInteractor" # assign export name for browser
   -s EXPORTED_FUNCTIONS="[_main, __emscripten_proxy_main]"   # export main
-  -s EXPORTED_RUNTIME_METHODS="[FS, cwrap, ccall, setValue, writeAsciiToMemory, lengthBytesUTF8, stringToUTF8, UTF8ToString]"   # export preamble funcs
+  -s EXPORTED_RUNTIME_METHODS="[FS, callMain, cwrap, ccall, setValue, writeAsciiToMemory, lengthBytesUTF8, stringToUTF8, UTF8ToString]"   # export preamble funcs
   --post-js wasm/src/post.js
   --pre-js wasm/src/pre.js
-  -pthread
   $OPTIM_FLAGS
 )
 
