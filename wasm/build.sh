@@ -67,15 +67,20 @@ FFMPEG_FLAGS=(
 emconfigure ./configure "${FFMPEG_FLAGS[@]}"
 emmake make -j8
 
+OPTIM_FLAGS="-O3"
+if [[ "$OSTYPE" == "linux-gnu"* ]]; then
+  # Use closure complier only in linux environment
+  OPTIM_FLAGS="$OPTIM_FLAGS --closure 1"
+fi
+
 # build ffmpeg.wasm
 mkdir -p wasm/dist
 EMCC_FLAGS=(
-  -I. -I./fftools
+  -I. -I./fftools -I$BUILD_DIR/include
   -Llibavcodec -Llibavdevice -Llibavfilter -Llibavformat -Llibavutil -Llibpostproc -Llibswscale -Llibswresample -Llibavresample -L$BUILD_DIR/lib
-  -Qunused-arguments
+  -Wno-deprecated-declarations -Wno-pointer-sign -Wno-implicit-int-float-conversion -Wno-switch -Wno-parentheses -Qunused-arguments
   -o wasm/dist/ffmpeg-core.js fftools/ffmpeg_filter.c fftools/ffmpeg_hw.c fftools/ffmpeg_mux.c fftools/ffmpeg_opt.c  fftools/cmdutils.c fftools/opt_common.c fftools/ffmpeg.c
   -lavdevice -lavfilter -lavformat -lavcodec -lswresample -lswscale -lavutil -lpostproc -lm -lx264 -lvpx -lfdk-aac -lz -lopus -lwebp
-  -O3
   -s USE_SDL=2                      # use SDL2
   -s USE_PTHREADS=1                 # enable pthreads support
   -s PROXY_TO_PTHREAD=1             # detach main() from browser/UI main thread
@@ -86,9 +91,11 @@ EMCC_FLAGS=(
   -s MODULARIZE=1                   # use modularized version to be more flexible
   -s EXPORT_NAME="createFFmpegCore" # assign export name for browser
   -s EXPORTED_FUNCTIONS="[_main, __emscripten_proxy_main]"   # export main
-  -s EXPORTED_RUNTIME_METHODS="[FS, cwrap, ccall, _malloc, setValue, writeAsciiToMemory, lengthBytesUTF8, stringToUTF8, UTF8ToString]"   # export preamble funcs
+  -s EXPORTED_RUNTIME_METHODS="[FS, cwrap, ccall, setValue, writeAsciiToMemory, lengthBytesUTF8, stringToUTF8, UTF8ToString]"   # export preamble funcs
   --post-js wasm/src/post.js
   --pre-js wasm/src/pre.js
+  -pthread
+  $OPTIM_FLAGS
 )
 
 emcc "${EMCC_FLAGS[@]}"
