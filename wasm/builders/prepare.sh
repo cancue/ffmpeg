@@ -3,6 +3,8 @@ source $(dirname $0)/var.sh
 
 LIBS=(
   https://github.com/ffmpegwasm/x264.git
+	https://github.com/ffmpegwasm/WavPack
+	https://github.com/ffmpegwasm/lame
 	https://github.com/ffmpegwasm/testdata
 	https://github.com/ffmpegwasm/libvpx
 	https://github.com/ffmpegwasm/x265

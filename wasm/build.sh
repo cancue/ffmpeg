@@ -28,10 +28,10 @@ $BUILDER_DIR/build-opus.sh
 $BUILDER_DIR/build-libwebp.sh
 
 $BUILDER_DIR/build-wavpack.sh
-#$BUILDER_DIR/build-lame.sh
-$BUILDER_DIR/build-ogg.sh
-$BUILDER_DIR/build-vorbis.sh
-$BUILDER_DIR/build-theora.sh
+$BUILDER_DIR/build-lame.sh
+#$BUILDER_DIR/build-ogg.sh
+#$BUILDER_DIR/build-vorbis.sh
+#$BUILDER_DIR/build-theora.sh
 $BUILDER_DIR/build-freetype2.sh
 $BUILDER_DIR/build-fribidi.sh
 $BUILDER_DIR/build-harfbuzz.sh
@@ -56,10 +56,17 @@ FFMPEG_FLAGS=(
   --enable-zlib                 # enable zlib
   --enable-libx264              # enable x264
   --enable-libvpx               # enable libvpx / webm
-  # --enable-libmp3lame           # enable libmp3lame
+  --enable-libmp3lame           # enable libmp3lame
   --enable-libfdk-aac           # enable libfdk-aac
   --enable-libopus              # enable opus
   --enable-libwebp              # enable libwebp
+  #--enable-libtheora      # enable libtheora
+  #--enable-libvorbis      # enable libvorbis
+  ##--enable-libwavpack          # enable libwavpack
+  --enable-libfreetype         # enable freetype
+  --enable-libass              # enable libass
+  --enable-libfribidi          # enable libfribidi
+  #--enable-libaom              # enable libaom
   --extra-cflags="$CFLAGS"
   --extra-cxxflags="$CFLAGS"
   --extra-ldflags="$LDFLAGS"
@@ -88,7 +95,7 @@ EMCC_FLAGS=(
   -Llibavcodec -Llibavdevice -Llibavfilter -Llibavformat -Llibavutil -Llibpostproc -Llibswscale -Llibswresample -Llibavresample -L$BUILD_DIR/lib
   -Wno-deprecated-declarations -Wno-pointer-sign -Wno-implicit-int-float-conversion -Wno-switch -Wno-parentheses -Qunused-arguments
   -o wasm/dist/ffmpeg-core.js fftools/ffmpeg_filter.c fftools/ffmpeg_hw.c fftools/ffmpeg_mux.c fftools/ffmpeg_opt.c  fftools/cmdutils.c fftools/opt_common.c fftools/ffmpeg.c
-  -lavdevice -lavfilter -lavformat -lavcodec -lswresample -lswscale -lavutil -lpostproc -lm -lx264 -lvpx -lfdk-aac -lz -lopus -lwebp
+  -lavdevice -lavfilter -lavformat -lavcodec -lswresample -lswscale -lavutil -lpostproc -lm -lx264 -lvpx -lfdk-aac -lz -lopus -lwebp -lmp3lame -lharfbuzz -lfribidi -lass -lwavpack -lfreetype
   -pthread
   -s USE_PTHREADS=1                 # enable pthreads support
   -s PROXY_TO_PTHREAD=1             # detach main() from browser/UI main thread

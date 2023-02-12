@@ -3,7 +3,7 @@
 set -euo pipefail
 source $(dirname $0)/var.sh
 
-LIB_PATH=wasm/builders/libs/libmp3lame
+LIB_PATH=wasm/builders/libs/lame
 CONF_FLAGS=(
   --prefix=$BUILD_DIR                                 # install library in a build directory for FFmpeg to include
   --host=i686-linux                                   # use i686 linux
