@@ -16,5 +16,5 @@ echo "CONF_FLAGS=${CONF_FLAGS[@]}"
   emconfigure ./configure "${CONF_FLAGS[@]}")
 emmake make -C $LIB_PATH clean
 # build apinames manually to prevent it built by emcc
-gcc -o third_party/freetype2/objs/apinames third_party/freetype2/src/tools/apinames.c
+gcc -o wasm/builders/libs/freetype2/objs/apinames wasm/builders/libs/freetype2/src/tools/apinames.c
 emmake make -C $LIB_PATH install -j

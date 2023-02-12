@@ -12,7 +12,6 @@ set -euo pipefail
 source $(dirname $0)/builders/var.sh
 
 # load emcc
-# -s EXPORTED_FUNCTIONS="[_main, _proxy_main]"   # export main and proxy_main funcs
 EMSDK_VERSION=latest
 $EMSDK/emsdk install $EMSDK_VERSION
 $EMSDK/emsdk activate $EMSDK_VERSION
@@ -25,9 +24,18 @@ $BUILDER_DIR/build-zlib.sh
 $BUILDER_DIR/build-x264.sh
 $BUILDER_DIR/build-fdk-aac.sh
 $BUILDER_DIR/build-libvpx.sh
-# $BUILDER_DIR/build-lame.sh
 $BUILDER_DIR/build-opus.sh
 $BUILDER_DIR/build-libwebp.sh
+
+$BUILDER_DIR/build-wavpack.sh
+#$BUILDER_DIR/build-lame.sh
+$BUILDER_DIR/build-ogg.sh
+$BUILDER_DIR/build-vorbis.sh
+$BUILDER_DIR/build-theora.sh
+$BUILDER_DIR/build-freetype2.sh
+$BUILDER_DIR/build-fribidi.sh
+$BUILDER_DIR/build-harfbuzz.sh
+$BUILDER_DIR/build-libass.sh
 
 # config ffmpeg
 FFMPEG_FLAGS=(
@@ -84,8 +92,10 @@ EMCC_FLAGS=(
   -pthread
   -s USE_PTHREADS=1                 # enable pthreads support
   -s PROXY_TO_PTHREAD=1             # detach main() from browser/UI main thread
-  -s ALLOW_MEMORY_GROWTH=1
+  # -s INITIAL_MEMORY=1073741824      # 1GB
   -s INITIAL_MEMORY=33554432        # 32MB
+  -s MAXIMUM_MEMORY=1073741824      # 1GB
+  -s ALLOW_MEMORY_GROWTH=1
   -s USE_SDL=2                      # use SDL2
   -s INVOKE_RUN=0                   # not to run the main() in the beginning
   -s EXIT_RUNTIME=1                 # exit runtime after execution
