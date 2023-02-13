@@ -1,7 +1,8 @@
 #!/bin/bash
 
+echo \# harfbuzz
 set -euo pipefail
-source $(dirname $0)/var.sh
+source $(dirname $0)/common.sh
 
 LIB_PATH=wasm/builders/libs/harfbuzz
 CFLAGS="$CFLAGS -DHB_NO_PRAGMA_GCC_DIAGNOSTIC_ERROR"

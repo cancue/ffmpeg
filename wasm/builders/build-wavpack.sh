@@ -1,7 +1,8 @@
 #!/bin/bash
 
+echo \# wevpack
 set -euo pipefail
-source $(dirname $0)/var.sh
+source $(dirname $0)/common.sh
 
 LIB_PATH=wasm/builders/libs/WavPack
 CONF_FLAGS=(

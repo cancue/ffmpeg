@@ -1,7 +1,8 @@
 #!/bin/bash
 
+echo \# x265
 set -euo pipefail
-source $(dirname $0)/var.sh
+source $(dirname $0)/common.sh
 
 CXXFLAGS="$CXXFLAGS -s -msimd128"
 LIB_PATH=wasm/builders/libs/x265/source

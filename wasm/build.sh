@@ -7,17 +7,10 @@ make uninstall
 make distclean
 make clean
 
-# load vars
+# load vars and emsdk
 set -euo pipefail
-source $(dirname $0)/builders/var.sh
-
-# load emcc
-EMSDK_VERSION=latest
-$EMSDK/emsdk install $EMSDK_VERSION
-$EMSDK/emsdk activate $EMSDK_VERSION
-source $EMSDK/emsdk_env.sh
-emcc -v
-PATH=$(em-config LLVM_ROOT):$PATH
+source $(dirname $0)/builders/vars.sh
+source $(dirname $0)/builders/emsdk.sh
 
 # run scripts
 $BUILDER_DIR/build-zlib.sh
@@ -100,7 +93,7 @@ EMCC_FLAGS=(
   -s USE_PTHREADS=1                 # enable pthreads support
   -s PROXY_TO_PTHREAD=1             # detach main() from browser/UI main thread
   # -s INITIAL_MEMORY=1073741824      # 1GB
-  -s INITIAL_MEMORY=33554432        # 32MB
+  -s INITIAL_MEMORY=$INITIAL_MEMORY
   -s MAXIMUM_MEMORY=1073741824      # 1GB
   -s ALLOW_MEMORY_GROWTH=1
   -s USE_SDL=2                      # use SDL2

@@ -1,7 +1,8 @@
 #!/bin/bash
 
+echo \# lame
 set -euo pipefail
-source $(dirname $0)/var.sh
+source $(dirname $0)/common.sh
 
 LIB_PATH=wasm/builders/libs/lame
 CONF_FLAGS=(
@@ -10,7 +11,7 @@ CONF_FLAGS=(
   --disable-shared                                    # disable shared library
   --disable-frontend                                  # exclude lame executable
   --disable-analyzer-hooks                            # exclude analyzer hooks
-  --disable-dependency-tracking                       # speed up one-time build
+  #--disable-dependency-tracking                       # speed up one-time build
   --disable-gtktest
 )
 echo "CONF_FLAGS=${CONF_FLAGS[@]}"

@@ -1,7 +1,8 @@
 #!/bin/bash
 
+echo \# freetype
 set -euo pipefail
-source $(dirname $0)/var.sh
+source $(dirname $0)/common.sh
 
 LIB_PATH=wasm/builders/libs/freetype2
 CONF_FLAGS=(

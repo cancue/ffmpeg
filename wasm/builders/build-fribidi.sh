@@ -1,7 +1,8 @@
 #!/bin/bash
 
+echo \# fribidi
 set -euo pipefail
-source $(dirname $0)/var.sh
+source $(dirname $0)/common.sh
 
 LIB_PATH=wasm/builders/libs/fribidi
 CONF_FLAGS=(
@@ -11,6 +12,7 @@ CONF_FLAGS=(
   --enable-static=yes
   --disable-dependency-tracking
   --disable-debug
+  --disable-docs
 )
 echo "CONF_FLAGS=${CONF_FLAGS[@]}"
 (cd $LIB_PATH && \

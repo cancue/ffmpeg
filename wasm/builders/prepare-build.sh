@@ -1,15 +1,37 @@
 set -euo pipefail
 source $(dirname $0)/var.sh
 
+# deps
+cmds=()
+
+# Detect what dependencies are missing.
+for cmd in autoconf automake libtool pkg-config ragel
+do
+  if ! command -v $cmd &> /dev/null
+  then
+    cmds+=("$cmd")
+  fi
+done
+
+# Install missing dependencies
+if [ ${#cmds[@]} -ne 0 ];
+then
+  if [[ "$OSTYPE" == "linux-gnu"* ]]; then
+    apt-get update
+    apt-get install -y ${cmds[@]}
+  else
+    brew install ${cmds[@]}
+  fi
+fi
+
+# libs
 LIBS=(
   https://github.com/ffmpegwasm/x264.git
 	https://github.com/ffmpegwasm/WavPack
-	https://github.com/ffmpegwasm/lame
+	https://github.com/ffmpegwasm/lame # replace 3.100 to 3.99.99
 	https://github.com/ffmpegwasm/testdata
 	https://github.com/ffmpegwasm/libvpx
 	https://github.com/ffmpegwasm/x265
-	https://github.com/ffmpegwasm/WavPack
-	https://github.com/ffmpegwasm/lame
 	https://github.com/ffmpegwasm/fdk-aac
 	https://github.com/ffmpegwasm/vorbis
 	https://github.com/ffmpegwasm/Ogg
