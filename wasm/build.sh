@@ -99,10 +99,9 @@ EMCC_FLAGS=(
   -pthread
   -s USE_PTHREADS=1                 # enable pthreads support
   -s PROXY_TO_PTHREAD=1             # detach main() from browser/UI main thread
-  # -s INITIAL_MEMORY=1073741824      # 1GB
   -s INITIAL_MEMORY=$INITIAL_MEMORY
-  #-s MAXIMUM_MEMORY=1073741824      # 1GB
-  #-s ALLOW_MEMORY_GROWTH=1
+  -s MAXIMUM_MEMORY=1073741824      # 1GB
+  -s ALLOW_MEMORY_GROWTH=1
   -s USE_SDL=2                      # use SDL2
   -s INVOKE_RUN=0                   # not to run the main() in the beginning
   -s EXIT_RUNTIME=1                 # exit runtime after execution
