@@ -26,7 +26,7 @@ fi
 
 # libs
 LIBS=(
-  https://github.com/ffmpegwasm/x264.git
+  https://github.com/mirror/x264.git
 	https://github.com/ffmpegwasm/WavPack
 	https://github.com/ffmpegwasm/lame # replace 3.100 to 3.99.99
 	https://github.com/ffmpegwasm/testdata

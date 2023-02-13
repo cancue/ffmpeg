@@ -41,7 +41,11 @@ FFMPEG_FLAGS=(
   --disable-inline-asm
   --disable-programs
   --disable-doc
-  #--disable-stripping           # disable stripping
+  --enable-demuxer=mov # also mp4,m4a,3gp,3g2,mj2
+  --enable-encoder=libx264,libfdk_aac
+  --enable-parser=h264,aac
+  --enable-muxer=mp4,hls,null
+  --disable-stripping           # disable stripping
   --disable-debug               # disable debug info, required by closure
   --disable-runtime-cpudetect   # disable runtime cpu detect
   --disable-autodetect          # disable external libraries auto detect
