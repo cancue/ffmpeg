@@ -15,6 +15,7 @@ source $(dirname $0)/builders/emsdk.sh
 # run scripts
 $BUILDER_DIR/build-zlib.sh
 $BUILDER_DIR/build-x264.sh
+#$BUILDER_DIR/build-x265.sh
 $BUILDER_DIR/build-fdk-aac.sh
 $BUILDER_DIR/build-libvpx.sh
 $BUILDER_DIR/build-opus.sh
@@ -27,6 +28,7 @@ $BUILDER_DIR/build-lame.sh
 #$BUILDER_DIR/build-theora.sh
 $BUILDER_DIR/build-freetype2.sh
 $BUILDER_DIR/build-fribidi.sh
+$BUILDER_DIR/build-libpng.sh
 $BUILDER_DIR/build-harfbuzz.sh
 $BUILDER_DIR/build-libass.sh
 
@@ -48,6 +50,7 @@ FFMPEG_FLAGS=(
   --enable-nonfree              # required by fdk-aac
   --enable-zlib                 # enable zlib
   --enable-libx264              # enable x264
+  #--enable-libx265              # enable x265
   --enable-libvpx               # enable libvpx / webm
   --enable-libmp3lame           # enable libmp3lame
   --enable-libfdk-aac           # enable libfdk-aac
@@ -62,7 +65,7 @@ FFMPEG_FLAGS=(
   #--enable-libaom              # enable libaom
   --extra-cflags="$CFLAGS"
   --extra-cxxflags="$CFLAGS"
-  --extra-ldflags="$LDFLAGS"
+  --extra-ldflags="$LDFLAGS -L$BUILD_DIR/lib"
   --pkg-config-flags="--static"
   --nm="llvm-nm"
   --ar=emar
@@ -86,16 +89,16 @@ mkdir -p wasm/dist
 EMCC_FLAGS=(
   -I. -I./fftools -I$BUILD_DIR/include
   -Llibavcodec -Llibavdevice -Llibavfilter -Llibavformat -Llibavutil -Llibpostproc -Llibswscale -Llibswresample -Llibavresample -L$BUILD_DIR/lib
-  -Wno-deprecated-declarations -Wno-pointer-sign -Wno-implicit-int-float-conversion -Wno-switch -Wno-parentheses -Qunused-arguments
+  -Wno-deprecated-declarations -Wno-pointer-sign -Wno-implicit-int-float-conversion -Wno-switch -Wno-parentheses -Qunused-arguments -Wbad-function-cast -Wcast-function-type
   -o wasm/dist/ffmpeg-core.js fftools/ffmpeg_filter.c fftools/ffmpeg_hw.c fftools/ffmpeg_mux.c fftools/ffmpeg_opt.c  fftools/cmdutils.c fftools/opt_common.c fftools/ffmpeg.c
-  -lavdevice -lavfilter -lavformat -lavcodec -lswresample -lswscale -lavutil -lpostproc -lm -lx264 -lvpx -lfdk-aac -lz -lopus -lwebp -lmp3lame -lharfbuzz -lfribidi -lass -lwavpack -lfreetype
+  -lavdevice -lavfilter -lavformat -lavcodec -lswresample -lswscale -lavutil -lpostproc -lm -lx264 -lvpx -lfdk-aac -lz -lopus -lwebp -lmp3lame -lharfbuzz -lfribidi -lass -lwavpack -lpng16 -lfreetype
   -pthread
   -s USE_PTHREADS=1                 # enable pthreads support
   -s PROXY_TO_PTHREAD=1             # detach main() from browser/UI main thread
   # -s INITIAL_MEMORY=1073741824      # 1GB
   -s INITIAL_MEMORY=$INITIAL_MEMORY
-  -s MAXIMUM_MEMORY=1073741824      # 1GB
-  -s ALLOW_MEMORY_GROWTH=1
+  #-s MAXIMUM_MEMORY=1073741824      # 1GB
+  #-s ALLOW_MEMORY_GROWTH=1
   -s USE_SDL=2                      # use SDL2
   -s INVOKE_RUN=0                   # not to run the main() in the beginning
   -s EXIT_RUNTIME=1                 # exit runtime after execution

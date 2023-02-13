@@ -5,10 +5,10 @@ set -euo pipefail
 source $(dirname $0)/common.sh
 
 CXXFLAGS="$CXXFLAGS -s -msimd128"
-LIB_PATH=wasm/builders/libs/x265/source
+LIB_PATH=wasm/builders/libs/x265
 BASE_FLAGS=(
   -DCMAKE_TOOLCHAIN_FILE=$TOOLCHAIN_FILE
-  -DENABLE_LIBNUMA=OFF
+  #-DENABLE_LIBNUMA=OFF
   -DENABLE_SHARED=OFF
   -DENABLE_CLI=OFF
 )
@@ -29,31 +29,31 @@ FLAGS_10BIT=(
 FLAGS_MAIN=(
   ${BASE_FLAGS[@]}
   -DCMAKE_INSTALL_PREFIX=$BUILD_DIR
-  -DEXTRA_LIB="x265_main10.a;x265_main12.a"
+  -DEXTRA_LIB="libx265_main10.a;libx265_main12.a"
   -DEXTRA_LINK_FLAGS=-L.
   -DLINKED_10BIT=ON
   -DLINKED_12BIT=ON
 )
 
-cd $LIB_PATH
+cd $LIB_PATH/source
 rm -rf build
 mkdir -p build
 cd build
 mkdir -p main 10bit 12bit
 
 cd 12bit
-emcmake cmake ../.. -DCMAKE_CXX_FLAGS="$CXXFLAGS" ${FLAGS_12BIT[@]}
-make -j
+emmake cmake ../.. -DCMAKE_CXX_FLAGS="$CXXFLAGS" ${FLAGS_12BIT[@]}
+emmake make -j
 
 cd ../10bit 
-emcmake cmake ../.. -DCMAKE_CXX_FLAGS="$CXXFLAGS" ${FLAGS_10BIT[@]}
-make -j
+emmake cmake ../.. -DCMAKE_CXX_FLAGS="$CXXFLAGS" ${FLAGS_10BIT[@]}
+emmake make -j
 
 cd ../main
 ln -sf ../10bit/libx265.a libx265_main10.a
 ln -sf ../12bit/libx265.a libx265_main12.a
-emcmake cmake ../.. -DCMAKE_CXX_FLAGS="$CXXFLAGS" ${FLAGS_MAIN[@]}
-make -j
+emmake cmake ../.. -DCMAKE_CXX_FLAGS="$CXXFLAGS" ${FLAGS_MAIN[@]}
+emmake make -j
 mv libx265.a libx265_main.a
 
 # Merge static libraries

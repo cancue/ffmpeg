@@ -8,7 +8,7 @@ export BUILDER_DIR=$ROOT_DIR/wasm/builders
 export EMSDK=$BUILDER_DIR/emsdk
 export PKG_CONFIG_PATH=$BUILD_DIR/lib/pkgconfig
 export FFMPEG_ST=no
-export INITIAL_MEMORY=33554432
+export INITIAL_MEMORY=1073741824
 
 export TOOLCHAIN_FILE=$EMSDK/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake
 export EM_PKG_CONFIG_PATH=$BUILD_DIR/lib/pkgconfig

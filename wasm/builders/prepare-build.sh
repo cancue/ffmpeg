@@ -44,6 +44,7 @@ LIBS=(
 	https://github.com/fribidi/fribidi.git
 	https://github.com/harfbuzz/harfbuzz.git
 	https://github.com/libass/libass.git
+  https://github.com/glennrp/libpng.git
 )
 
 cd $ROOT_DIR/wasm/builders
