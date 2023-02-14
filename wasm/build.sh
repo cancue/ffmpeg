@@ -95,7 +95,7 @@ EMCC_FLAGS=(
   -Llibavcodec -Llibavdevice -Llibavfilter -Llibavformat -Llibavutil -Llibpostproc -Llibswscale -Llibswresample -Llibavresample -L$BUILD_DIR/lib
   -Wno-deprecated-declarations -Wno-pointer-sign -Wno-implicit-int-float-conversion -Wno-switch -Wno-parentheses -Qunused-arguments -Wbad-function-cast -Wcast-function-type
   -o wasm/dist/ffmpeg-core.js fftools/ffmpeg_filter.c fftools/ffmpeg_hw.c fftools/ffmpeg_mux.c fftools/ffmpeg_opt.c  fftools/cmdutils.c fftools/opt_common.c fftools/ffmpeg.c
-  -lavdevice -lavfilter -lavformat -lavcodec -lswresample -lswscale -lavutil -lpostproc -lm -lx264 -lvpx -lfdk-aac -lz -lopus -lwebp -lmp3lame -lharfbuzz -lfribidi -lass -lwavpack -lpng16 -lfreetype
+  -lavdevice -lavfilter -lavformat -lavcodec -lswresample -lswscale -lavutil -lpostproc -lm -lx264 -lvpx -lfdk-aac -lz -lopus -lwebp -lmp3lame -lharfbuzz -lfribidi -lass -lwavpack -lpng16 -lfreetype -lworkerfs.js
   -pthread
   -s USE_PTHREADS=1                 # enable pthreads support
   -s PROXY_TO_PTHREAD=1             # detach main() from browser/UI main thread
@@ -109,7 +109,7 @@ EMCC_FLAGS=(
   -s MODULARIZE=1                   # use modularized version to be more flexible
   -s EXPORT_NAME="createInteractor" # assign export name for browser
   -s EXPORTED_FUNCTIONS="[_main, __emscripten_proxy_main]"   # export main
-  -s EXPORTED_RUNTIME_METHODS="[FS, callMain, cwrap, ccall, setValue, writeAsciiToMemory, lengthBytesUTF8, stringToUTF8, UTF8ToString]"   # export preamble funcs
+  -s EXPORTED_RUNTIME_METHODS="[FS, FS_mount, FS_unmount, FS_filesystems, callMain, cwrap, ccall, setValue, writeAsciiToMemory, lengthBytesUTF8, stringToUTF8, UTF8ToString]"   # export preamble funcs
   --post-js wasm/src/post.js
   --pre-js wasm/src/pre.js
   $OPTIM_FLAGS
