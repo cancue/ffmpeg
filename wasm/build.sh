@@ -110,6 +110,7 @@ EMCC_FLAGS=(
   -s EXPORT_NAME="createInteractor" # assign export name for browser
   -s EXPORTED_FUNCTIONS="[_main, __emscripten_proxy_main]"   # export main
   -s EXPORTED_RUNTIME_METHODS="[FS, FS_mount, FS_unmount, FS_filesystems, callMain, cwrap, ccall, setValue, writeAsciiToMemory, lengthBytesUTF8, stringToUTF8, UTF8ToString]"   # export preamble funcs
+  -s ALLOW_UNIMPLEMENTED_SYSCALLS=1
   --post-js wasm/src/post.js
   --pre-js wasm/src/pre.js
   $OPTIM_FLAGS
